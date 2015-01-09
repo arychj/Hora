@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import datetime, glob, grp, time, os, pwd, re, shutil, smtplib, string, sys, threading, traceback, urllib, urllib2
+import time, string, sys, threading, urllib, urllib2
 import xml.etree.ElementTree as ET
 from sys import stdout
 from datetime import datetime
