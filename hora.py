@@ -109,7 +109,6 @@ def LoadConfig(file):
 	_config = tree.getroot()
 
 def Call(endpoint, params = {}):
-	attempt = 0
 	params = urllib.urlencode(params)
 
 	override = _config.find('apis/api[@name="TheTVDB"]/endpointoverrides/endpoint[@name="%s"]' % (endpoint))
@@ -126,15 +125,6 @@ def Call(endpoint, params = {}):
 			endpoint,
 			params
 		)
-
-	#print '%s: %s' % (attempt, url)
-
-	try:
-		stream = urllib2.urlopen(url)
-	except Exception as e:
-		if attempt <= 3:
-			stream = urllib2.urlopen(url)
-			attempt = attempt + 1
 
 	sResponse = stream.read();
 	
