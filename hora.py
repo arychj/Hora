@@ -126,8 +126,8 @@ def Call(endpoint, params = {}):
 			params
 		)
 
+	stream = urllib2.urlopen(url)
 	sResponse = stream.read();
-	
 	response = ET.fromstring(sResponse)
 
 	return response
