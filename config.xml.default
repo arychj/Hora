@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <settings>
+    <debug>false</debug>
+    <accounts>
+      <account name="TheMovieDB">
+        <username>USERNAME</username>
+        <password>PASSWORD</password>
+      </account>
+	  <account name="TheTVDB">
+		<id>ID</id>
+	  </account>
+    </accounts>
+  </settings>
+  <apis>
+    <api name="TheMovieDB">
+      <url>https://api.themoviedb.org/3</url>
+      <key>KEY</key>
+    </api>
+    <api name="TheTVDB">
+      <url>http://www.thetvdb.com/api</url>
+      <key>KEY</key>
+	  <endpointoverrides>
+	    <endpoint name="User_Favorites">User_Favorites.php</endpoint>
+	  </endpointoverrides>
+    </api>
+  </apis>
+</config>
