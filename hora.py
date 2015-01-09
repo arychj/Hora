@@ -49,7 +49,10 @@ def Main():
 			for dayofweek, day in status.iteritems():
 				day = sorted(day, key=lambda k: k['Name']) 
 				for series in day:
-					print '\t{0:40}{1:3}{2:10}'.format(series['Name'], dayshort[dayofweek], series['Airs'])
+					if dayofweek < 7:
+						print '\t{0:40}{1:3}{2:10} (S{3:02}E{4:02})'.format(series['Name'], dayshort[dayofweek], series['Airs'], int(series['Season']), int(series['Episode']))
+					else:
+						print '\t{0:40}'.format(series['Name'])
 
 			print
 
@@ -83,6 +86,8 @@ def GetSeriesDetails(ids, serieslist, id):
 					list[airs.weekday()].append({
 						'Name': series.find('Series/SeriesName').text,
 						'Airs': episode.find('FirstAired').text,
+						'Season': episode.find('Combined_season').text,
+						'Episode': episode.find('Combined_episodenumber').text
 					})
 					
 					found = True
@@ -95,6 +100,8 @@ def GetSeriesDetails(ids, serieslist, id):
 			serieslist['Unknown'][7].append({
 				'Name': series.find('Series/SeriesName').text,
 				'Airs': '??',
+				'Season': '??',
+				'Episode': '??'
 			})
 			
 	except Exception as e:
