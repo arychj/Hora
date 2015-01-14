@@ -68,10 +68,10 @@ def GetSeriesDetails(ids, serieslist, id):
 			sAirs = episode.find('FirstAired').text
 			if sAirs != None:
 				airs = datetime.strptime(sAirs, '%Y-%m-%d')
-				if airs >= datetime.today():
+				if airs.date() >= datetime.now().date():
 					status = series.find('Series/Status').text
 					if status == 'Continuing':
-						if (airs - datetime.today()).days < 7:
+						if (airs - datetime.now()).days <= 7:
 							list = serieslist['Airing']
 						else:
 							list = serieslist['Hiatus']
