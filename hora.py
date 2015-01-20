@@ -47,13 +47,17 @@ def Main():
 		if len(status) > 0:
 			print statusname
 			for dayofweek, day in status.iteritems():
-				if statusname == 'Airing' and dayofweek == datetime.now().weekday():
+				if statusname == 'Airing' and dayofweek != 0 and dayofweek == datetime.now().weekday():
 					print
 
-				day = sorted(day, key=lambda k: k['Name']) 
+				if statusname == 'Airing':
+					day = sorted(day, key=lambda k: k['Name']) 
+				else:
+					day = sorted(day, key=lambda k: k['Airs'] + k['Name']) 
+
 				for series in day:
 					if dayofweek < 7:
-						print '\t{0:40}{1:3}{2:10} (S{3:02}E{4:02})'.format(series['Name'], dayshort[dayofweek], series['Airs'], int(series['Season']), int(series['Episode']))
+						print '\t{0:40}{1:3}{2:10} (S{3:02}E{4:02})'.format(series['Name'], series['Weekday'], series['Airs'], int(series['Season']), int(series['Episode']))
 					else:
 						print '\t{0:40}'.format(series['Name'])
 
@@ -76,19 +80,23 @@ def GetSeriesDetails(ids, serieslist, id):
 					if status == 'Continuing':
 						if (airs - datetime.now()).days < 6:
 							list = serieslist['Airing']
+							weekday = airs.weekday()
 						else:
 							list = serieslist['Hiatus']
+							weekday = 0
 					elif status == 'Ended':
 						list = serieslist['Ended']
+						weekday = 0
 					else:
 						continue
 
-					if airs.weekday() not in list:
-						list[airs.weekday()] = []
-
-					list[airs.weekday()].append({
+					if weekday not in list:
+						list[weekday] = []
+						
+					list[weekday].append({
 						'Name': series.find('Series/SeriesName').text,
 						'Airs': episode.find('FirstAired').text,
+						'Weekday': dayshort[airs.weekday()],
 						'Season': episode.find('Combined_season').text,
 						'Episode': episode.find('Combined_episodenumber').text
 					})
