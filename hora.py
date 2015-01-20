@@ -47,6 +47,9 @@ def Main():
 		if len(status) > 0:
 			print statusname
 			for dayofweek, day in status.iteritems():
+				if statusname == 'Airing' and dayofweek == datetime.now().weekday():
+					print
+
 				day = sorted(day, key=lambda k: k['Name']) 
 				for series in day:
 					if dayofweek < 7:
@@ -71,7 +74,7 @@ def GetSeriesDetails(ids, serieslist, id):
 				if airs.date() >= datetime.now().date():
 					status = series.find('Series/Status').text
 					if status == 'Continuing':
-						if (airs - datetime.now()).days <= 7:
+						if (airs - datetime.now()).days < 6:
 							list = serieslist['Airing']
 						else:
 							list = serieslist['Hiatus']
