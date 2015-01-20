@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import time, string, sys, threading, urllib, urllib2
+import time, string, sys, threading, re, urllib, urllib2
 import xml.etree.ElementTree as ET
 from sys import stdout
 from datetime import datetime
@@ -92,9 +92,9 @@ def GetSeriesDetails(ids, serieslist, id):
 
 					if weekday not in list:
 						list[weekday] = []
-						
+					
 					list[weekday].append({
-						'Name': series.find('Series/SeriesName').text,
+						'Name': FormatName(series.find('Series/SeriesName').text),
 						'Airs': episode.find('FirstAired').text,
 						'Weekday': dayshort[airs.weekday()],
 						'Season': episode.find('Combined_season').text,
@@ -109,7 +109,7 @@ def GetSeriesDetails(ids, serieslist, id):
 				serieslist['Unknown'][7] = []
 
 			serieslist['Unknown'][7].append({
-				'Name': series.find('Series/SeriesName').text,
+				'Name': FormatName(series.find('Series/SeriesName').text),
 				'Airs': '??',
 				'Season': '??',
 				'Episode': '??'
@@ -149,6 +149,9 @@ def Call(endpoint, params = {}):
 	response = ET.fromstring(sResponse)
 
 	return response
+
+def FormatName(name):
+	return re.sub(_config.find('settings/regex/sanitizename').text, '', name).strip()
 
 if len(sys.argv) != 2:
 	print '\tUsage: ' + sys.argv[0] + ' config.xml'

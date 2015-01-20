@@ -11,6 +11,9 @@
 		<id>ID</id>
 	  </account>
     </accounts>
+	<regex>
+      <sanitizename><![CDATA[(^(The|Marvel's))|(\(\d+\)$)]]></sanitizename>
+	</regex>
   </settings>
   <apis>
     <api name="TheMovieDB">
